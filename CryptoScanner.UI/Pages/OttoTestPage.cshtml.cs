@@ -11,9 +11,10 @@ namespace CryptoScanner.UI.Pages
             ApiCaller caller = new();
 
             //Fungerar, list blir alla crypto currencies i API:t
-            //List<CryptoViewModel> list = await caller.GetAllCryptoToViewModels();
+            List<CryptoViewModel> list = await caller.GetAllCryptoToViewModels();
 
-            CryptoViewModel bitcoin = await caller.GetCryptoViewModelById("bitcoin");
+            //Fungerar, hämtar en specifik cryptovaluta
+            CryptoViewModel blueFrog = await caller.GetCryptoViewModelById("Blue frog");
         }
     }
 }

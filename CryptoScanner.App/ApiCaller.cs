@@ -1,5 +1,6 @@
 ﻿using CryptoScanner.Data.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CryptoScanner.App
 {
@@ -13,10 +14,10 @@ namespace CryptoScanner.App
         }
 
         /// <summary>
-        /// Returns the name and id of all crypto currencies in the API
+        /// Hämtar namnet och id för alla kryptovalutor från API:et.
         /// </summary>
-        /// <returns>List<CryptoViewModel></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>En lista med <see cref="CryptoViewModel"/> som innehåller namnet och id för varje kryptovaluta.</returns>
+        /// <exception cref="Exception">Kastas om det inte går att hämta kryptovalutor från API:et.</exception>
         public async Task<List<CryptoViewModel>> GetAllCryptoToViewModels()
         {
             HttpResponseMessage response = await Client.GetAsync("https://api.coingecko.com/api/v3/coins/list");
@@ -40,40 +41,49 @@ namespace CryptoScanner.App
                         };
                         viewResults.Add(newCrypto);
                     }
-
                     return viewResults;
                 }
-
             }
-
-            throw new Exception();
+            throw new Exception("Something went wrong, try again later");
         }
 
-        public async Task<CryptoViewModel> GetCryptoViewModelById(string id)
+        /// <summary>
+        /// Hämtar en specifik cryptovaluta utifrån vad valutan heter
+        /// </summary>
+        /// <param name="id">Namnet på cryptovalutan</param>
+        /// <returns> En <see cref="CryptoViewModel"/> med id, namn och värdet i SEK</returns>
+        /// <exception cref="Exception">Throwar en exception om det inte funkar</exception>
+        public async Task<CryptoViewModel> GetCryptoViewModelById(string name)
         {
-            HttpResponseMessage response = await Client.GetAsync($"https://api.coingecko.com/api/v3/simple/price?ids={id}&vs_currencies=sek");
+
+            string id = CryptoService.ConvertToSnakeCase(name);
+
+            HttpResponseMessage response = await Client.GetAsync($"https://api.coingecko.com/api/v3/simple/price?ids={id.ToLower()}&vs_currencies=sek");
 
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
 
-                //TODO: SEK blir 0
-                CryptoData cryptoData = JsonConvert.DeserializeObject<CryptoData>(json);
+                JObject jsonObject = JObject.Parse(json);
 
-                if (cryptoData != null)
+                if (jsonObject[id] != null && jsonObject[id]["sek"] != null)
                 {
+                    decimal sekValue = (decimal)jsonObject[id]["sek"];
+                    string nameWithTitleCase = CryptoService.ConvertToTitleCase(id);
+
                     CryptoViewModel newCrypto = new()
                     {
                         Id = id,
-                        Name = id,
-                        Price = cryptoData.Sek
+                        //TODO: Gör så Name blir Pascal case av id
+                        Name = nameWithTitleCase,
+                        Price = sekValue
                     };
 
                     return newCrypto;
                 }
             }
 
-            throw new Exception();
+            throw new Exception("Can't find cryptocurrency with that name");
         }
     }
 }
