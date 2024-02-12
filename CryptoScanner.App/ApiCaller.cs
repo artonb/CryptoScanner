@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CryptoScanner.Data.Models;
+using Newtonsoft.Json;
 
 namespace CryptoScanner.App
 {
@@ -11,7 +12,7 @@ namespace CryptoScanner.App
 
         }
 
-        public async Task GetAllCrypto()
+        public async Task<List<CryptoRootModel>> GetAllCrypto()
         {
             HttpResponseMessage response = await Client.GetAsync("https://api.coingecko.com/api/v3/coins/list");
 
@@ -19,8 +20,16 @@ namespace CryptoScanner.App
             {
                 string json = await response.Content.ReadAsStringAsync();
 
-                JsonConvert.DeserializeObject<string>(json);
+                List<CryptoRootModel>? result = JsonConvert.DeserializeObject<List<CryptoRootModel>>(json);
+
+                if (result != null && result.Count > 0)
+                {
+                    return result;
+                }
+
             }
+
+            throw new Exception();
         }
 
         public async Task GetCryptoById(string id)
