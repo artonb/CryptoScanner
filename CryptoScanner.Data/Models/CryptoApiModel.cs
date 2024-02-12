@@ -14,4 +14,11 @@ namespace CryptoScanner.Data.Models
         [JsonProperty("name")]
         public string Name { get; set; }
     }
+
+    public class CryptoData
+    {
+        [JsonProperty("sek")]
+        public decimal Sek { get; set; }
+    }
+
 }

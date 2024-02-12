@@ -1,22 +1,41 @@
-﻿using CryptoScanner.App;
+﻿using CryptoScanner.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CryptoScanner.UI.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public string? ErrorMessage { get; set; }
+        [BindProperty]
+        public CryptoViewModel Crypto { get; set; }
+        public async Task OnGet()
         {
-            _logger = logger;
+
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPost()
         {
-            ApiCaller caller = new();
 
-            caller.GetCryptoById("bitcoin");
+
+            if (Crypto != null)
+            {
+                ErrorMessage = "Try Searching for something else";
+                //La in de här för att kunna köra programmet. Ta bort sen /Otto
+                throw new Exception();
+            }
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+            //La in de här för att kunna köra programmet. Ta bort sen /Otto
+            throw new Exception();
+
         }
     }
 }
