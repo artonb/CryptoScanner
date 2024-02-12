@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace CryptoScanner.Data.Models
 {
-    internal class CryptoModel
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
+    public class CryptoRootModel
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("symbol")]
+        public string Symbol { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }
