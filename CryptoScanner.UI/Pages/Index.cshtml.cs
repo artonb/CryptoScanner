@@ -4,16 +4,28 @@ namespace CryptoScanner.UI.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public string? ErrorMessage { get; set; }
+        [BindProperty]
+        public async Task OnGet()
         {
-            _logger = logger;
+
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnPost()
         {
+            if(Crypto !=null)
+            {
+                ErrorMessage = "Try Searching for something else";
+            }
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+              ErrorMessage = ex.Message; 
+            }
         }
     }
 }
