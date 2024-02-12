@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using CryptoScanner.Data.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CryptoScanner.UI.Pages
 {
@@ -7,6 +9,7 @@ namespace CryptoScanner.UI.Pages
 
         public string? ErrorMessage { get; set; }
         [BindProperty]
+        public CryptoViewModel Crypto { get; set; }
         public async Task OnGet()
         {
 
@@ -14,9 +17,13 @@ namespace CryptoScanner.UI.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            if(Crypto !=null)
+
+
+            if (Crypto != null)
             {
                 ErrorMessage = "Try Searching for something else";
+                //La in de här för att kunna köra programmet. Ta bort sen /Otto
+                throw new Exception();
             }
             try
             {
@@ -24,8 +31,11 @@ namespace CryptoScanner.UI.Pages
             }
             catch (Exception ex)
             {
-              ErrorMessage = ex.Message; 
+                ErrorMessage = ex.Message;
             }
+            //La in de här för att kunna köra programmet. Ta bort sen /Otto
+            throw new Exception();
+
         }
     }
 }
