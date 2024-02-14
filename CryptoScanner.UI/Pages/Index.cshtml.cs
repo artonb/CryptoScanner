@@ -12,7 +12,6 @@ namespace CryptoScanner.UI.Pages
         public CryptoViewModel Crypto { get; set; }
         public async Task OnGet()
         {
-
         }
 
         public async Task<IActionResult> OnPost()
