@@ -85,5 +85,6 @@ namespace CryptoScanner.App
 
             throw new Exception("Can't find cryptocurrency with that name");
         }
+
     }
 }
