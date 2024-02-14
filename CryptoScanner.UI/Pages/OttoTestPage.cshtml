@@ -1,4 +1,12 @@
 ﻿@page
+@using CryptoScanner.Data.Models
 @model CryptoScanner.UI.Pages.OttoTestPageModel
 @{
+}
+
+@foreach(CryptoViewModel crypto in Model.Cryptos)
+{
+	<h1>Name: @crypto.Name</h1>
+	<h2>SEK: @crypto.Price</h2>
+	<hr />
 }
